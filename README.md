@@ -80,7 +80,7 @@ This program is a sandbox 2D application simulating the interactions between a l
 	<img src="https://i.imgur.com/cLxHkCA.png" width="500">
 </p>
 
-* The program also includes other materials and simulates other behaviors. Test it to discover them in the [**Release**](https://github.com/angeluriot/Sandbox/releases) section.
+* The program also includes other materials and simulates other behaviors. Test it to discover them in the [**Releases**](https://github.com/angeluriot/Sandbox/releases) section.
 
 <br/>
 
