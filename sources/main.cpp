@@ -48,7 +48,7 @@ int main()
 	variables.push_back(Variable("FPS (0 = pas de limite)", Int, 0, 0, 1000));
 	
 	Menu menu = Menu(variables, sf::Color(20, 20, 200), width, height);
-	menu.init_names(50, 750, sf::Color::White, 150);
+	menu.init_names(50, 750, sf::Color::White, 350);
 	menu.init_lines(700, 15, 1200, sf::Color(75, 75, 255));
 	menu.init_circles(20, sf::Color::White);
 	menu.init_values(40, 50, sf::Color::White);
