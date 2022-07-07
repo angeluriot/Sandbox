@@ -1,97 +1,56 @@
-#include "simulation.h"
-#include "materials/salt.h"
+#include "Simulator.hpp"
+#include "materials/Salt.hpp"
+#include "materials/Air.hpp"
 
 Salt::Salt()
 {
-	state = dust;
+	nature = Nature::Salt;
+	state = State::Dust;
 	weight = 100;
 	fire_level = 0;
+	can_burn = false;
 	way = rand() % 2 * 2 - 1;
 	color_swtich = rand() % 2;
+	salty = false;
 	done = false;
 }
 
-Material* Salt::init()
+Material* Salt::build()
 {
 	return new Salt();
 }
 
-Nature Salt::get_nature()
-{
-	return salt;
-}
-
-bool Salt::can_burn()
-{
-	return false;
-}
-
-sf::Color Salt::get_color()
+sf::Color Salt::get_color() const
 {
 	if (color_swtich)
 		return sf::Color(225, 225, 225);
-
 	else
 		return sf::Color(255, 255, 255);
 }
 
-
-
-// Met à jour le matériaux
-
 void Salt::update(int x, int y)
 {
-	if (rand_probability(0.01))
-	{
-		if (rand_probability(1. / 4.))
+	if (rand_probability(0.01f))
+		for (auto& way : Simulator::ways_4)
 		{
-			if (dissolve(x, y, x - 1, y))
-				return;
-		}
+			auto pos = dim::Vector2int(x, y) + way;
 
-		if (rand_probability(1. / 3.))
-		{
-			if (dissolve(x, y, x + 1, y))
-				return;
-		}
+			if (Simulator::in_world(pos) && Simulator::world[pos.x][pos.y]->nature == Nature::Water &&
+				!Simulator::world[pos.x][pos.y]->salty)
+			{
+				Simulator::world[pos.x][pos.y]->salty = true;
 
-		if (rand_probability(1. / 2.))
-		{
-			if (dissolve(x, y, x, y - 1))
-				return;
-		}
+				delete Simulator::world[x][y];
+				Simulator::world[x][y] = new Air();
 
-		if (dissolve(x, y, x, y + 1))
-			return;
-	}
+				return;
+			}
+		}
 
 	update_dust(x, y);
 }
 
-
-
-// Met à jour le feu
-
 void Salt::update_fire(int x, int y)
 {
 	fire_level = 0;
-	simulation.world[x][y]->draw_material(x, y);
-}
-
-
-
-// Dissous le sel dans l'eau
-
-bool dissolve(int x, int y, int target_x, int target_y)
-{
-	if (simulation.in_world(target_x, target_y) and simulation.world[target_x][target_y]->get_nature() == water and !simulation.world[target_x][target_y]->salty)
-	{
-		simulation.world[target_x][target_y]->salty = true;
-		simulation.world[target_x][target_y]->draw_material(target_x, target_y);
-		simulation.world[x][y]->disappeared(x, y);
-
-		return true;
-	}
-
-	return false;
 }

@@ -1,27 +1,20 @@
-#ifndef SNOW_H
-#define SNOW_H
-#include "material.h"
-
-
-
-// Classe définissant la neige
+#ifndef SNOW_HPP
+#define SNOW_HPP
+#include "Material.hpp"
 
 class Snow : public Material
 {
-
 public:
 
 	Snow();
+	Snow(const Snow& other) = default;
 
-	Material*	init();
-	Nature		get_nature();
-	bool		can_burn();
-	sf::Color	get_color();
+	Snow& operator=(const Snow& other) = default;
 
-	void		update(int x, int y);
-	void		update_fire(int x, int y);
+	Material* build() override;
+	sf::Color get_color() const override;
+	void update(int x, int y) override;
+	void update_fire(int x, int y) override;
 };
-
-bool is_not_cold_near(int x, int y);
 
 #endif

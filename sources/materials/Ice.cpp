@@ -1,67 +1,51 @@
-#include "simulation.h"
-#include "materials/ice.h"
+#include "Simulator.hpp"
+#include "materials/Ice.hpp"
+#include "materials/Water.hpp"
 
 Ice::Ice()
 {
-	state = solid;
+	nature = Nature::Ice;
+	state = State::Solid;
 	weight = 100;
 	fire_level = 0;
+	can_burn = false;
 	way = rand() % 2 * 2 - 1;
 	color_swtich = 0;
+	salty = false;
 	done = false;
 }
 
-Material* Ice::init()
+Material* Ice::build()
 {
 	return new Ice();
 }
 
-Nature Ice::get_nature()
-{
-	return ice;
-}
-
-bool Ice::can_burn()
-{
-	return false;
-}
-
-sf::Color Ice::get_color()
+sf::Color Ice::get_color() const
 {
 	return sf::Color(0, 200, 255);
 }
 
-
-
-// Met à jour le matériaux
-
 void Ice::update(int x, int y)
 {
-	if ((rand_probability(0.0001) and is_hot_near(x, y)) or is_fire_around(x, y))
-		liquefy(x, y);
+	bool is_hot_near = false;
+
+	for (auto& pos : Simulator::ways_4)
+		if (!(Simulator::in_world(x + pos.x, y + pos.y) &&
+			(Simulator::world[x + pos.x][y + pos.y]->nature == Nature::Ice ||
+			Simulator::world[x + pos.x][y + pos.y]->nature == Nature::Snow)))
+		{
+			is_hot_near = true;
+			break;
+		}
+
+	if ((rand_probability(0.0001f) && is_hot_near) || is_fire_around(x, y))
+	{
+		delete Simulator::world[x][y];
+		Simulator::world[x][y] = new Water();
+	}
 }
-
-
-
-// Met à jour le feu
 
 void Ice::update_fire(int x, int y)
 {
 	fire_level = 0;
-	simulation.world[x][y]->draw_material(x, y);
-}
-
-
-
-// Dit si il y a un matériaux chaud à côté
-
-bool is_hot_near(int x, int y)
-{
-	for (Position pos : simulation.ways_4)
-	{
-		if (!(simulation.in_world(x + pos.x, y + pos.y) and (simulation.world[x + pos.x][y + pos.y]->get_nature() == ice or simulation.world[x + pos.x][y + pos.y]->get_nature() == snow)))
-			return true;
-	}
-
-	return false;
 }

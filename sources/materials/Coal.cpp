@@ -1,56 +1,34 @@
-#include "simulation.h"
-#include "materials/coal.h"
+#include "Simulator.hpp"
+#include "materials/Coal.hpp"
 
 Coal::Coal()
 {
-	state = solid;
+	nature = Nature::Coal;
+	state = State::Solid;
 	weight = 100;
 	fire_level = 0;
+	can_burn = true;
 	way = rand() % 2 * 2 - 1;
 	color_swtich = 0;
+	salty = false;
 	done = false;
 }
 
-Material* Coal::init()
+Material* Coal::build()
 {
 	return new Coal();
 }
 
-Nature Coal::get_nature()
-{
-	return coal;
-}
-
-bool Coal::can_burn()
-{
-	return true;
-}
-
-sf::Color Coal::get_color()
+sf::Color Coal::get_color() const
 {
 	return sf::Color(30, 30, 30);
 }
 
-
-
-// Met à jour le matériaux
-
-void Coal::update(int x, int y)
-{
-}
-
-
-
-// Met à jour le feu
+void Coal::update(int x, int y) {}
 
 void Coal::update_fire(int x, int y)
 {
-	int temp = fire_level;
 	fire_level -= 1;
-
-	update_burn(x, y, 3000., 0.5);
-	update_fire_propagation(x, y, 0.5);
-
-	if (temp != fire_level)
-		simulation.world[x][y]->draw_material(x, y);
+	update_burn(x, y, 3000.f, 0.5f);
+	update_fire_propagation(x, y, 0.5f);
 }

@@ -1,25 +1,20 @@
-#ifndef WOOD_H
-#define WOOD_H
-#include "material.h"
-
-
-
-// Classe définissant le bois
+#ifndef WOOD_HPP
+#define WOOD_HPP
+#include "Material.hpp"
 
 class Wood : public Material
 {
-
 public:
 
 	Wood();
-	
-	Material*	init();
-	Nature		get_nature();
-	bool		can_burn();
-	sf::Color	get_color();
+	Wood(const Wood& other) = default;
 
-	void		update(int x, int y);
-	void		update_fire(int x, int y);
+	Wood& operator=(const Wood& other) = default;
+
+	Material* build() override;
+	sf::Color get_color() const override;
+	void update(int x, int y) override;
+	void update_fire(int x, int y) override;
 };
 
 #endif

@@ -1,5 +1,6 @@
 #include <dim/dimension3D.hpp>
 #include "Simulator.hpp"
+#include "Menu.hpp"
 
 int main()
 {
@@ -15,7 +16,6 @@ int main()
 		{
 			dim::Window::check_events(sf_event);
 			Menu::check_events(sf_event);
-			Simulator::check_events(sf_event);
 		}
 
 		dim::Window::clear(dim::Color::black);

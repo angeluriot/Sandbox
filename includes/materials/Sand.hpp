@@ -1,25 +1,20 @@
-#ifndef SAND_H
-#define SAND_H
-#include "material.h"
-
-
-
-// Classe définissant le sable
+#ifndef SAND_HPP
+#define SAND_HPP
+#include "Material.hpp"
 
 class Sand : public Material
 {
-
 public:
 
 	Sand();
-	
-	Material*	init();
-	Nature		get_nature();
-	bool		can_burn();
-	sf::Color	get_color();
+	Sand(const Sand& other) = default;
 
-	void		update(int x, int y);
-	void		update_fire(int x, int y);
+	Sand& operator=(const Sand& other) = default;
+
+	Material* build() override;
+	sf::Color get_color() const override;
+	void update(int x, int y) override;
+	void update_fire(int x, int y) override;
 };
 
 #endif

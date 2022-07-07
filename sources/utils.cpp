@@ -1,75 +1,32 @@
-#include "utils.h"
-
-int screen_width;
-
-
-
-// Construit une position
-
-Position::Position()
-{
-	x = 0;
-	y = 0;
-}
-
-
-
-// Construit une position à partir de son x et de son y
-
-Position::Position(int x, int y)
-{
-	this->x = x;
-	this->y = y;
-}
-
-
-
-// Construit une position à partir d'une autre position
-
-Position::Position(const Position& position)
-{
-	*this = position;
-}
-
-
-
-// Assignation
-
-void Position::operator=(const Position& position)
-{
-	x = position.x;
-	y = position.y;
-}
-
-
-
-// Donne un entier entre min et max
+#include "utils.hpp"
 
 int random_int(int min, int max)
 {
 	return rand() % (max - min) + min;
 }
 
-
-
-// Donne "vrai" avec une probabilité choisie
-
-bool rand_probability(const double& probability)
+bool rand_probability(float probability)
 {
-	if (probability < 0.)
+	if (probability < 0.f)
 		return false;
 
-	if (probability < 1.)
-		return ((double)rand() / (double)RAND_MAX < probability);
+	if (probability < 1.f)
+		return ((float)rand() / (float)RAND_MAX < probability);
 
 	return true;
 }
 
-
-
-// Donne la distance entre deux points
-
-double distance(double position_1_x, double position_1_y, double position_2_x, double position_2_y)
+float distance(dim::Vector2 position_1, float position_2_x, float position_2_y)
 {
-	return (int)sqrt(pow(position_1_x - position_2_x, 2) + pow(position_1_y - position_2_y, 2));
+	return sqrt(pow(position_1.x - position_2_x, 2) + pow(position_1.y - position_2_y, 2));
+}
+
+float distance(float position_1_x, float position_1_y, dim::Vector2 position_2)
+{
+	return sqrt(pow(position_1_x - position_2.x, 2) + pow(position_1_y - position_2.y, 2));
+}
+
+float distance(float position_1_x, float position_1_y, float position_2_x, float position_2_y)
+{
+	return sqrt(pow(position_1_x - position_2_x, 2) + pow(position_1_y - position_2_y, 2));
 }

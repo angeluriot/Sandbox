@@ -1,25 +1,20 @@
-#ifndef OIL_H
-#define OIL_H
-#include "material.h"
-
-
-
-// Classe définissant l'huile
+#ifndef OIL_HPP
+#define OIL_HPP
+#include "Material.hpp"
 
 class Oil : public Material
 {
-
 public:
 
 	Oil();
-	
-	Material*	init();
-	Nature		get_nature();
-	bool		can_burn();
-	sf::Color	get_color();
+	Oil(const Oil& other) = default;
 
-	void		update(int x, int y);
-	void		update_fire(int x, int y);
+	Oil& operator=(const Oil& other) = default;
+
+	Material* build() override;
+	sf::Color get_color() const override;
+	void update(int x, int y) override;
+	void update_fire(int x, int y) override;
 };
 
 #endif

@@ -1,25 +1,20 @@
-#ifndef AIR_H
-#define AIR_H
-#include "material.h"
-
-
-
-// Classe définissant l'air
+#ifndef AIR_HPP
+#define AIR_HPP
+#include "Material.hpp"
 
 class Air : public Material
 {
-
 public:
 
 	Air();
-	
-	Material*	init();
-	Nature		get_nature();
-	bool		can_burn();
-	sf::Color	get_color();
-	
-	void		update(int x, int y);
-	void		update_fire(int x, int y);
+	Air(const Air& other) = default;
+
+	Air& operator=(const Air& other) = default;
+
+	Material* build() override;
+	sf::Color get_color() const override;
+	void update(int x, int y) override;
+	void update_fire(int x, int y) override;
 };
 
 #endif

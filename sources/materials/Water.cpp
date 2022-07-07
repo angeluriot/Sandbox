@@ -1,105 +1,69 @@
-#include "simulation.h"
-#include "materials/water.h"
+#include "Simulator.hpp"
+#include "materials/Water.hpp"
+#include "materials/Vapor.hpp"
 
 Water::Water()
 {
-	state = liquid;
+	nature = Nature::Water;
+	state = State::Liquid;
 	weight = 10;
 	fire_level = 0;
+	can_burn = false;
 	way = rand() % 2 * 2 - 1;
 	color_swtich = 0;
+	salty = false;
 	done = false;
 }
 
-Material* Water::init()
+Material* Water::build()
 {
 	return new Water();
 }
 
-Nature Water::get_nature()
-{
-	return water;
-}
-
-bool Water::can_burn()
-{
-	return false;
-}
-
-sf::Color Water::get_color()
+sf::Color Water::get_color() const
 {
 	if (salty)
 		return sf::Color(0, 100, 255);
-
 	else
 		return sf::Color(0, 50, 255);
 }
 
-
-
-// Met à jour le matériaux
-
 void Water::update(int x, int y)
 {
-	if (salty and rand_probability(1. / 2.))
+	if (salty)
 	{
-		if (rand_probability(1. / 4.))
-		{
-			if (dilute(x, y, x - 1, y))
-				return;
-		}
+		auto pos = Simulator::ways_4[random_int(0, 4)];
 
-		if (rand_probability(1. / 3.))
+		if (Simulator::in_world(pos) && Simulator::world[pos.x][pos.y]->nature == Nature::Water &&
+			!Simulator::world[pos.x][pos.y]->salty)
 		{
-			if (dilute(x, y, x + 1, y))
-				return;
+			salty = false;
+			Simulator::world[pos.x][pos.y]->salty = true;
 		}
-
-		if (rand_probability(1. / 2.))
-		{
-			if (dilute(x, y, x, y - 1))
-				return;
-		}
-
-		if (dilute(x, y, x, y + 1))
-			return;
 	}
 
-	if (turn_off_fire(x, y))
+	for (auto& way : Simulator::ways_4)
 	{
-		evaporate(x, y);
-		return;
+		auto pos = dim::Vector2int(x, y) + way;
+
+		if (Simulator::in_world(pos) && Simulator::world[pos.x][pos.y]->fire_level > 0)
+		{
+			if (Simulator::world[pos.x][pos.y]->nature == Nature::Lava)
+				Simulator::world[pos.x][pos.y]->fire_level -= 1;
+			else
+				Simulator::world[pos.x][pos.y]->fire_level = 0;
+
+			delete Simulator::world[x][y];
+			Simulator::world[x][y] = new Vapor();
+
+			return;
+		}
 	}
 
 	update_liquid(x, y);
 }
 
-
-
-// Met à jour le feu
-
 void Water::update_fire(int x, int y)
 {
 	fire_level = 0;
-	simulation.world[x][y]->draw_material(x, y);
-}
-
-
-
-// Dillue l'eau salée dans l'eau
-
-bool dilute(int x, int y, int target_x, int target_y)
-{
-	if (simulation.in_world(target_x, target_y) and simulation.world[target_x][target_y]->get_nature() == water and !simulation.world[target_x][target_y]->salty)
-	{
-		simulation.world[target_x][target_y]->salty = true;
-		simulation.world[target_x][target_y]->draw_material(target_x, target_y);
-
-		simulation.world[x][y]->salty = false;
-		simulation.world[x][y]->draw_material(x, y);
-
-		return true;
-	}
-
-	return false;
 }

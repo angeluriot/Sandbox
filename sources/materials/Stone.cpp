@@ -1,50 +1,32 @@
-#include "simulation.h"
-#include "materials/stone.h"
+#include "Simulator.hpp"
+#include "materials/Stone.hpp"
 
 Stone::Stone()
 {
-	state = solid;
+	nature = Nature::Stone;
+	state = State::Solid;
 	weight = 100;
 	fire_level = 0;
+	can_burn = false;
 	way = rand() % 2 * 2 - 1;
 	color_swtich = 0;
+	salty = false;
 	done = false;
 }
 
-Material* Stone::init()
+Material* Stone::build()
 {
 	return new Stone();
 }
 
-Nature Stone::get_nature()
-{
-	return stone;
-}
-
-bool Stone::can_burn()
-{
-	return false;
-}
-
-sf::Color Stone::get_color()
+sf::Color Stone::get_color() const
 {
 	return sf::Color(150, 150, 150);
 }
 
-
-
-// Met à jour le matériaux
-
-void Stone::update(int x, int y)
-{
-}
-
-
-
-// Met à jour le feu
+void Stone::update(int x, int y) {}
 
 void Stone::update_fire(int x, int y)
 {
 	fire_level = 0;
-	simulation.world[x][y]->draw_material(x, y);
 }

@@ -1,25 +1,20 @@
-#ifndef COAL_H
-#define COAL_H
-#include "material.h"
-
-
-
-// Classe définissant le charbon
+#ifndef COAL_HPP
+#define COAL_HPP
+#include "Material.hpp"
 
 class Coal : public Material
 {
-
 public:
 
 	Coal();
+	Coal(const Coal& other) = default;
 
-	Material*	init();
-	Nature		get_nature();
-	bool		can_burn();
-	sf::Color	get_color();
+	Coal& operator=(const Coal& other) = default;
 
-	void		update(int x, int y);
-	void		update_fire(int x, int y);
+	Material* build() override;
+	sf::Color get_color() const override;
+	void update(int x, int y) override;
+	void update_fire(int x, int y) override;
 };
 
 #endif

@@ -1,53 +1,32 @@
-#ifndef SIMULATION_H
-#define SIMULATION_H
-#include "menu.h"
-#include "material.h"
-#include "utils.h"
-#include "materials/air.h"
-#include "materials/wood.h"
-#include "materials/sand.h"
-#include "materials/water.h"
-#include "materials/oil.h"
-#include "materials/salt.h"
-#include "materials/ash.h"
-#include "materials/coal.h"
-#include "materials/stone.h"
-#include "materials/lava.h"
-#include "materials/vapor.h"
-#include "materials/ice.h"
-#include "materials/snow.h"
-#include "materials/acid.h"
+#ifndef SIMULATION_HPP
+#define SIMULATION_HPP
+#include "Material.hpp"
+#include "utils.hpp"
 
-
-
-// Classe définissant la simulation
-
-class Simulation
+class Simulator
 {
-
 public:
 
-	int									world_width;	// Largeur du monde
-	int									world_height;	// Hauteur du monde
-	int									pixels_size;	// Taille des pixels
-	sf::RectangleShape					material;		// Un pixel à afficher
-	std::vector<std::vector<Material*>>	world;			// Le monde
-	Material*							brush;			// Le brush pour ajouter des matériaux
-	sf::RenderTexture					texture;		// La texture sur laquelle sont dessinés les pixels
-	sf::Sprite							sprite;			// Le sprite servant à afficher la texture
-	std::array<Position, 8>				ways_8;			// Liste des 8 directions
-	std::array<Position, 4>				ways_4;			// Liste des 4 directions
+	static dim::Vector2int						world_size;
+	static std::vector<std::vector<Material*>>	world;
+	static std::vector<dim::Vector2int>			world_ids;
+	static Material*							brush_type;
+	static int									brush_size;
+	static const std::array<dim::Vector2int, 4>	ways_4;
+	static const std::array<dim::Vector2int, 8>	ways_8;
+	static sf::Image							image;
+	static sf::Texture							texture;
+	static sf::Sprite							sprite;
 
-	Simulation();
-
-	void restart(const Menu& menu);
-	bool in_world(int x, int y);
-	void imputs(const sf::Vector2i& mouse_position);
-	void update(bool mouse_pressed, const sf::Vector2i& mouse_position);
-	void draw_all();
-	void draw(sf::RenderWindow& window);
+	static void init();
+	static void reset();
+	static dim::Vector2int screen_to_world(dim::Vector2int position);
+	static dim::Vector2int world_to_screen(dim::Vector2int position);
+	static bool in_world(dim::Vector2int position);
+	static bool in_world(int x, int y);
+	static void inputs();
+	static void update();
+	static void draw();
 };
-
-extern Simulation simulation;
 
 #endif

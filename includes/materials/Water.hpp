@@ -1,27 +1,20 @@
-#ifndef WATER_H
-#define WATER_H
-#include "material.h"
-
-
-
-// Classe définissant l'eau
+#ifndef WATER_HPP
+#define WATER_HPP
+#include "Material.hpp"
 
 class Water : public Material
 {
-
 public:
 
 	Water();
-	
-	Material*	init();
-	Nature		get_nature();
-	bool		can_burn();
-	sf::Color	get_color();
+	Water(const Water& other) = default;
 
-	void		update(int x, int y);
-	void		update_fire(int x, int y);
+	Water& operator=(const Water& other) = default;
+
+	Material* build() override;
+	sf::Color get_color() const override;
+	void update(int x, int y) override;
+	void update_fire(int x, int y) override;
 };
-
-bool dilute(int x, int y, int target_x, int target_y);
 
 #endif

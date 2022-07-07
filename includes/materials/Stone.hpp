@@ -1,25 +1,20 @@
-#ifndef STONE_H
-#define STONE_H
-#include "material.h"
-
-
-
-// Classe définissant la pierre
+#ifndef STONE_HPP
+#define STONE_HPP
+#include "Material.hpp"
 
 class Stone : public Material
 {
-
 public:
 
 	Stone();
+	Stone(const Stone& other) = default;
 
-	Material*	init();
-	Nature		get_nature();
-	bool		can_burn();
-	sf::Color	get_color();
+	Stone& operator=(const Stone& other) = default;
 
-	void		update(int x, int y);
-	void		update_fire(int x, int y);
+	Material* build() override;
+	sf::Color get_color() const override;
+	void update(int x, int y) override;
+	void update_fire(int x, int y) override;
 };
 
 #endif

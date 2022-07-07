@@ -1,25 +1,20 @@
-#ifndef ASH_H
-#define ASH_H
-#include "material.h"
-
-
-
-// Classe définissant la cendre
+#ifndef ASH_HPP
+#define ASH_HPP
+#include "Material.hpp"
 
 class Ash : public Material
 {
-
 public:
 
 	Ash();
-	
-	Material*	init();
-	Nature		get_nature();
-	bool		can_burn();
-	sf::Color	get_color();
+	Ash(const Ash& other) = default;
 
-	void		update(int x, int y);
-	void		update_fire(int x, int y);
+	Ash& operator=(const Ash& other) = default;
+
+	Material* build() override;
+	sf::Color get_color() const override;
+	void update(int x, int y) override;
+	void update_fire(int x, int y) override;
 };
 
 #endif

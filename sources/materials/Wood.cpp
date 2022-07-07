@@ -1,56 +1,34 @@
-#include "simulation.h"
-#include "materials/wood.h"
+#include "Simulator.hpp"
+#include "materials/Wood.hpp"
 
 Wood::Wood()
 {
-	state = solid;
+	nature = Nature::Wood;
+	state = State::Solid;
 	weight = 100;
 	fire_level = 0;
+	can_burn = true;
 	way = rand() % 2 * 2 - 1;
 	color_swtich = 0;
+	salty = false;
 	done = false;
 }
 
-Material* Wood::init()
+Material* Wood::build()
 {
 	return new Wood();
 }
 
-Nature Wood::get_nature()
-{
-	return wood;
-}
-
-bool Wood::can_burn()
-{
-	return true;
-}
-
-sf::Color Wood::get_color()
+sf::Color Wood::get_color() const
 {
 	return sf::Color(134, 57, 11);
 }
 
-
-
-// Met à jour le matériaux
-
-void Wood::update(int x, int y)
-{
-}
-
-
-
-// Met à jour le feu
+void Wood::update(int x, int y) {}
 
 void Wood::update_fire(int x, int y)
 {
-	int temp = fire_level;
 	fire_level -= 1;
-
-	update_burn(x, y, 1000., 0.2);
-	update_fire_propagation(x, y, 0.5);
-
-	if (temp != fire_level)
-		simulation.world[x][y]->draw_material(x, y);
+	update_burn(x, y, 1000.f, 0.2f);
+	update_fire_propagation(x, y, 0.5f);
 }

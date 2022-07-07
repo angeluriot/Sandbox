@@ -1,27 +1,20 @@
-#ifndef ACID_H
-#define ACID_H
-#include "material.h"
-
-
-
-// Classe définissant l'acide
+#ifndef ACID_HPP
+#define ACID_HPP
+#include "Material.hpp"
 
 class Acid : public Material
 {
-
 public:
 
 	Acid();
+	Acid(const Acid& other) = default;
 
-	Material*	init();
-	Nature		get_nature();
-	bool		can_burn();
-	sf::Color	get_color();
+	Acid& operator=(const Acid& other) = default;
 
-	void		update(int x, int y);
-	void		update_fire(int x, int y);
+	Material* build() override;
+	sf::Color get_color() const override;
+	void update(int x, int y) override;
+	void update_fire(int x, int y) override;
 };
-
-bool corrosion(int x, int y);
 
 #endif

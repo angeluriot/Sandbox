@@ -1,27 +1,20 @@
-#ifndef ICE_H
-#define ICE_H
-#include "material.h"
-
-
-
-// Classe définissant la glace
+#ifndef ICE_HPP
+#define ICE_HPP
+#include "Material.hpp"
 
 class Ice : public Material
 {
-
 public:
 
 	Ice();
+	Ice(const Ice& other) = default;
 
-	Material*	init();
-	Nature		get_nature();
-	bool		can_burn();
-	sf::Color	get_color();
+	Ice& operator=(const Ice& other) = default;
 
-	void		update(int x, int y);
-	void		update_fire(int x, int y);
+	Material* build() override;
+	sf::Color get_color() const override;
+	void update(int x, int y) override;
+	void update_fire(int x, int y) override;
 };
-
-bool is_hot_near(int x, int y);
 
 #endif

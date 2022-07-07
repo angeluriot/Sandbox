@@ -1,59 +1,46 @@
-#include "simulation.h"
-#include "materials/lava.h"
+#include "Simulator.hpp"
+#include "materials/Lava.hpp"
+#include "materials/Stone.hpp"
 
 Lava::Lava()
 {
-	state = liquid;
+	nature = Nature::Lava;
+	state = State::Liquid;
 	weight = 15;
-	fire_level = FIRE_MAX;
+	fire_level = fire_max;
+	can_burn = false;
 	way = rand() % 2 * 2 - 1;
 	color_swtich = 0;
+	salty = false;
 	done = false;
 }
 
-Material* Lava::init()
+Material* Lava::build()
 {
 	return new Lava();
 }
 
-Nature Lava::get_nature()
-{
-	return lava;
-}
-
-bool Lava::can_burn()
-{
-	return false;
-}
-
-sf::Color Lava::get_color()
+sf::Color Lava::get_color() const
 {
 	return sf::Color(255, 127, 0);
 }
-
-
-
-// Met à jour le matériaux
 
 void Lava::update(int x, int y)
 {
 	if (fire_level == 0)
 	{
-		harden(x, y);
+		delete Simulator::world[x][y];
+		Simulator::world[x][y] = new Stone();
 		return;
 	}
 
 	update_liquid(x, y);
 }
 
-
-
-// Met à jour le feu
-
 void Lava::update_fire(int x, int y)
 {
-	if (rand_probability(0.01) and is_solid_around(x, y))
+	if (rand_probability(0.01f) && (is_border(x, y) || is_around(x, y, State::Solid) || is_around(x, y, State::Dust)))
 		fire_level--;
 
-	update_fire_propagation(x, y, 0.5);
+	update_fire_propagation(x, y, 0.5f);
 }

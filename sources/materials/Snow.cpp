@@ -1,56 +1,60 @@
-#include "simulation.h"
-#include "materials/snow.h"
-#include "materials/ice.h"
+#include "Simulator.hpp"
+#include "materials/Snow.hpp"
+#include "materials/Water.hpp"
+#include "materials/Air.hpp"
 
 Snow::Snow()
 {
-	state = dust;
+	nature = Nature::Snow;
+	state = State::Dust;
 	weight = 100;
 	fire_level = 0;
+	can_burn = false;
 	way = rand() % 2 * 2 - 1;
 	color_swtich = 0;
+	salty = false;
 	done = false;
 }
 
-Material* Snow::init()
+Material* Snow::build()
 {
 	return new Snow();
 }
 
-Nature Snow::get_nature()
-{
-	return snow;
-}
-
-bool Snow::can_burn()
-{
-	return false;
-}
-
-sf::Color Snow::get_color()
+sf::Color Snow::get_color() const
 {
 	return sf::Color(255, 255, 255);
 }
 
-
-
-// Met à jour le matériaux
-
 void Snow::update(int x, int y)
 {
-	if ((rand_probability(0.0001) and is_hot_near(x, y)) or is_fire_around(x, y) or is_near(x, y, salt))
-		liquefy(x, y);
+	bool is_hot_near = false;
 
-	else
-		update_dust(x, y);
+	for (auto& pos : Simulator::ways_4)
+		if (!(Simulator::in_world(x + pos.x, y + pos.y) &&
+			(Simulator::world[x + pos.x][y + pos.y]->nature == Nature::Ice ||
+			Simulator::world[x + pos.x][y + pos.y]->nature == Nature::Snow)))
+		{
+			is_hot_near = true;
+			break;
+		}
+
+	if ((rand_probability(0.0001f) && is_hot_near) || (rand_probability(0.01f) && is_around(x, y, Nature::Salt)) || is_fire_around(x, y))
+	{
+		delete Simulator::world[x][y];
+
+		if (rand_probability(0.5f))
+			Simulator::world[x][y] = new Water();
+		else
+			Simulator::world[x][y] = new Air();
+
+		return;
+	}
+
+	update_dust(x, y);
 }
-
-
-
-// Met à jour le feu
 
 void Snow::update_fire(int x, int y)
 {
 	fire_level = 0;
-	simulation.world[x][y]->draw_material(x, y);
 }

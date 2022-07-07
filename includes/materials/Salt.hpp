@@ -1,27 +1,20 @@
-#ifndef SALT_H
-#define SALT_H
-#include "material.h"
-
-
-
-// Classe définissant le sel
+#ifndef SALT_HPP
+#define SALT_HPP
+#include "Material.hpp"
 
 class Salt : public Material
 {
-
 public:
 
 	Salt();
-	
-	Material*	init();
-	Nature		get_nature();
-	bool		can_burn();
-	sf::Color	get_color();
+	Salt(const Salt& other) = default;
 
-	void		update(int x, int y);
-	void		update_fire(int x, int y);
+	Salt& operator=(const Salt& other) = default;
+
+	Material* build() override;
+	sf::Color get_color() const override;
+	void update(int x, int y) override;
+	void update_fire(int x, int y) override;
 };
-
-bool dissolve(int x, int y, int target_x, int target_y);
 
 #endif
