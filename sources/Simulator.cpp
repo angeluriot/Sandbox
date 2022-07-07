@@ -7,6 +7,9 @@ std::vector<std::vector<Material*>>	Simulator::world;
 std::vector<dim::Vector2int>		Simulator::world_ids;
 Material*							Simulator::brush_type = new Wood();
 int									Simulator::brush_size = 10;
+sf::Image*							Simulator::image = nullptr;
+sf::Texture*						Simulator::texture = nullptr;
+sf::Sprite*							Simulator::sprite = nullptr;
 
 const std::array<dim::Vector2int, 4> Simulator::ways_4 = {
 	dim::Vector2int(-1, 0),
@@ -28,6 +31,10 @@ const std::array<dim::Vector2int, 8> Simulator::ways_8 = {
 
 void Simulator::init()
 {
+	image = new sf::Image();
+	texture = new sf::Texture();
+	sprite = new sf::Sprite();
+
 	reset();
 }
 
@@ -51,8 +58,8 @@ void Simulator::reset()
 		for (int y = 0; y < world_size.y; y++)
 			world_ids[x * world_size.y + y] = dim::Vector2int(x, y);
 
-	image.create(world_size.x, world_size.y, sf::Color::Black);
-	texture.create(world_size.x, world_size.y);
+	image->create(world_size.x, world_size.y, sf::Color::Black);
+	texture->create(world_size.x, world_size.y);
 }
 
 dim::Vector2int Simulator::screen_to_world(dim::Vector2int position)
@@ -140,14 +147,16 @@ void Simulator::draw()
 			sf::Color fire_color = world[x][y]->get_fire_color();
 			float opacity = (float)fire_color.a / 255.f;
 
-			image.setPixel(x, y, sf::Color(
+			/*image->setPixel(x, y, sf::Color(
 				(1 - opacity) * color.r + opacity * fire_color.r,
 				(1 - opacity) * color.g + opacity * fire_color.g,
 				(1 - opacity) * color.b + opacity * fire_color.b,
-				255));
+				255));*/
+
+			image->setPixel(x, y, sf::Color::Red);
 		}
 
-	texture.loadFromImage(image);
-	sprite.setTexture(texture);
-	dim::Window::draw(sprite);
+	texture->loadFromImage(*image);
+	sprite->setTexture(*texture);
+	dim::Window::draw(*sprite);
 }

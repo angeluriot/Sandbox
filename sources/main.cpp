@@ -27,4 +27,6 @@ int main()
 		Menu::display();
 		dim::Window::display();
 	}
+
+	return EXIT_SUCCESS;
 }

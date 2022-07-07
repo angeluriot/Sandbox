@@ -14,9 +14,9 @@ public:
 	static int									brush_size;
 	static const std::array<dim::Vector2int, 4>	ways_4;
 	static const std::array<dim::Vector2int, 8>	ways_8;
-	static sf::Image							image;
-	static sf::Texture							texture;
-	static sf::Sprite							sprite;
+	static sf::Image*							image;
+	static sf::Texture*							texture;
+	static sf::Sprite*							sprite;
 
 	static void init();
 	static void reset();
