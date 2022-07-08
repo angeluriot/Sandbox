@@ -63,25 +63,25 @@ void Menu::display()
 	ImGui::NewLine();
 	ImGui::Text("The type of the brush:");
 
-	if (ImGui::Combo("##brush_type", &selected, "Wood\0Sand\0Water\0Oil\0Salt\0Coal\0Stone\0Lava\0Ice\0Snow\0Acid\0Fire\0Eraser"))
+	if (ImGui::Combo("##brush_type", &selected, "Stone\0Sand\0Water\0Salt\0Wood\0Coal\0Oil\0Fire\0Lava\0Ice\0Snow\0Acid\0Eraser"))
 	{
 		switch (selected)
 		{
-			case 0: Simulator::brush_type = new Wood(); break;
+			case 0: Simulator::brush_type = new Stone(); break;
 			case 1: Simulator::brush_type = new Sand(); break;
 			case 2: Simulator::brush_type = new Water(); break;
-			case 3: Simulator::brush_type = new Oil(); break;
-			case 4: Simulator::brush_type = new Salt(); break;
+			case 3: Simulator::brush_type = new Salt(); break;
+			case 4: Simulator::brush_type = new Wood(); break;
 			case 5: Simulator::brush_type = new Coal(); break;
-			case 6: Simulator::brush_type = new Stone(); break;
-			case 7: Simulator::brush_type = new Lava(); break;
-			case 8: Simulator::brush_type = new Ice(); break;
-			case 9: Simulator::brush_type = new Snow(); break;
-			case 10: Simulator::brush_type = new Acid(); break;
-			case 11:
+			case 6: Simulator::brush_type = new Oil(); break;
+			case 7:
 				Simulator::brush_type = new Air();
 				Simulator::brush_type->fire_level = Material::fire_max;
 				break;
+			case 8: Simulator::brush_type = new Lava(); break;
+			case 9: Simulator::brush_type = new Ice(); break;
+			case 10: Simulator::brush_type = new Snow(); break;
+			case 11: Simulator::brush_type = new Acid(); break;
 			case 12:
 				Simulator::brush_type = new Air();
 				break;

@@ -1,12 +1,12 @@
 #include "Simulator.hpp"
 #include "materials/Air.hpp"
-#include "materials/Wood.hpp"
+#include "materials/Stone.hpp"
 #include "Menu.hpp"
 
 dim::Vector2int						Simulator::world_size;
 std::vector<std::vector<Material*>>	Simulator::world;
 std::vector<dim::Vector2int>		Simulator::world_ids;
-Material*							Simulator::brush_type = new Wood();
+Material*							Simulator::brush_type = new Stone();
 int									Simulator::brush_size = 10;
 sf::Image*							Simulator::image = nullptr;
 sf::Texture*						Simulator::texture = nullptr;
