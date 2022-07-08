@@ -10,15 +10,7 @@ class Menu
 {
 public:
 
-	static bool	visible;	// True if the menu is visible, false otherwise.
-	static bool	active;		// True if you clicked on the menu, false otherwise.
-
-	/**
-	 * @brief Handle the events of the menu.
-	 *
-	 * @param sf_event the SFML event object
-	 */
-	static void check_events(const sf::Event& sf_event);
+	static bool active; // True if you clicked on the menu, false otherwise.
 
 	/**
 	 * @brief Show the title of a part of the menu.

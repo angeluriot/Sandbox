@@ -9,7 +9,7 @@ Sand::Sand()
 	fire_level = 0;
 	can_burn = false;
 	way = rand() % 2 * 2 - 1;
-	color_swtich = rand() % 2;
+	color_type = random_int(0, 3);
 	salty = false;
 	done = false;
 }
@@ -21,10 +21,13 @@ Material* Sand::build()
 
 sf::Color Sand::get_color() const
 {
-	if (color_swtich)
-		return sf::Color(205, 126, 0);
-	else
-		return sf::Color(235, 156, 30);
+	if (color_type == 0)
+		return sf::Color(205, 125, 0);
+
+	if (color_type == 1)
+		return sf::Color(220, 140, 15);
+
+	return sf::Color(235, 155, 30);
 }
 
 void Sand::update(int x, int y)

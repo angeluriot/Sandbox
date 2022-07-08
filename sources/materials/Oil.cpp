@@ -9,7 +9,7 @@ Oil::Oil()
 	fire_level = 0;
 	can_burn = true;
 	way = rand() % 2 * 2 - 1;
-	color_swtich = 0;
+	color_type = 0;
 	salty = false;
 	done = false;
 }
@@ -21,7 +21,7 @@ Material* Oil::build()
 
 sf::Color Oil::get_color() const
 {
-	return sf::Color(213, 222, 0);
+	return sf::Color(180, 200, 0);
 }
 
 void Oil::update(int x, int y)

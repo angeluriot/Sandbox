@@ -10,7 +10,7 @@ Salt::Salt()
 	fire_level = 0;
 	can_burn = false;
 	way = rand() % 2 * 2 - 1;
-	color_swtich = rand() % 2;
+	color_type = random_int(0, 3);
 	salty = false;
 	done = false;
 }
@@ -22,10 +22,13 @@ Material* Salt::build()
 
 sf::Color Salt::get_color() const
 {
-	if (color_swtich)
+	if (color_type == 0)
+		return sf::Color(210, 210, 210);
+
+	if (color_type == 1)
 		return sf::Color(225, 225, 225);
-	else
-		return sf::Color(255, 255, 255);
+
+	return sf::Color(240, 240, 240);
 }
 
 void Salt::update(int x, int y)

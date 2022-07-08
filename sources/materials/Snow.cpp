@@ -11,7 +11,7 @@ Snow::Snow()
 	fire_level = 0;
 	can_burn = false;
 	way = rand() % 2 * 2 - 1;
-	color_swtich = 0;
+	color_type = random_int(0, 3);
 	salty = false;
 	done = false;
 }
@@ -23,6 +23,12 @@ Material* Snow::build()
 
 sf::Color Snow::get_color() const
 {
+	if (color_type == 0)
+		return sf::Color(245, 245, 255);
+
+	if (color_type == 1)
+		return sf::Color(250, 250, 255);
+
 	return sf::Color(255, 255, 255);
 }
 

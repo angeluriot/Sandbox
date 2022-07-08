@@ -1,36 +1,7 @@
 #include "Material.hpp"
 #include "Simulator.hpp"
 #include "materials/Air.hpp"
-#include "materials/Wood.hpp"
-#include "materials/Sand.hpp"
-#include "materials/Water.hpp"
-#include "materials/Oil.hpp"
-#include "materials/Salt.hpp"
 #include "materials/Ash.hpp"
-#include "materials/Coal.hpp"
-#include "materials/Stone.hpp"
-#include "materials/Lava.hpp"
-#include "materials/Vapor.hpp"
-#include "materials/Ice.hpp"
-#include "materials/Snow.hpp"
-#include "materials/Acid.hpp"
-
-const std::vector<Material*> Material::materials = {
-	new Air(),
-	new Wood(),
-	new Sand(),
-	new Water(),
-	new Oil(),
-	new Salt(),
-	new Ash(),
-	new Coal(),
-	new Stone(),
-	new Lava(),
-	new Vapor(),
-	new Ice(),
-	new Snow(),
-	new Acid()
-};
 
 bool Material::is_near(int x, int y, Nature nature)
 {
@@ -132,8 +103,7 @@ bool Material::can_move_to(int x, int y, int target_x, int target_y) const
 
 void Material::move_to(int x, int y, int target_x, int target_y)
 {
-	Simulator::world[x][y] = Simulator::world[target_x][target_y];
-	Simulator::world[target_x][target_y] = this;
+	std::swap(Simulator::world[x][y], Simulator::world[target_x][target_y]);
 
 	set_done();
 	Simulator::world[x][y]->set_done();
@@ -198,6 +168,14 @@ void Material::update_liquid(int x, int y)
 		move_to(x, y, x + way, y);
 		way = -way;
 	}
+
+	else if (rand_probability(0.03f))
+	{
+		auto pos = dim::Vector2int(x, y) + Simulator::ways_4[random_int(0, 4)];
+
+		if (Simulator::in_world(pos) && Simulator::world[x][y]->nature == Simulator::world[pos.x][pos.y]->nature)
+			std::swap(Simulator::world[x][y], Simulator::world[pos.x][pos.y]);
+	}
 }
 
 void Material::update_gas(int x, int y)
@@ -212,11 +190,16 @@ void Material::update_gas(int x, int y)
 			if (can_move_to(x, y, x + pos.x, y + pos.y))
 				move_to(x, y, x + pos.x, y + pos.y);
 
-			return;
+			break;
 		}
 
 		count++;
 	}
+
+	auto pos = dim::Vector2int(x, y) + Simulator::ways_4[random_int(0, 4)];
+
+	if (Simulator::in_world(pos) && Simulator::world[x][y]->nature == Simulator::world[pos.x][pos.y]->nature)
+		std::swap(Simulator::world[x][y], Simulator::world[pos.x][pos.y]);
 }
 
 void Material::update_burn(int x, int y, float time, float ash_probability)
@@ -265,7 +248,7 @@ void Material::update_fire_movement(int x, int y)
 
 sf::Color Material::get_fire_color() const
 {
-	if (fire_level == 0 || nature != Nature::Lava)
+	if (fire_level == 0 || nature == Nature::Lava)
 		return sf::Color(0, 0, 0, 0);
 
 	if (fire_level > fire_max / 3.f)

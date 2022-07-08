@@ -1,6 +1,7 @@
 #include "Simulator.hpp"
 #include "materials/Vapor.hpp"
 #include "materials/Water.hpp"
+#include "materials/Air.hpp"
 
 Vapor::Vapor()
 {
@@ -10,7 +11,7 @@ Vapor::Vapor()
 	fire_level = 0;
 	can_burn = false;
 	way = rand() % 2 * 2 - 1;
-	color_swtich = 0;
+	color_type = random_int(0, 3);
 	salty = false;
 	done = false;
 }
@@ -22,6 +23,12 @@ Material* Vapor::build()
 
 sf::Color Vapor::get_color() const
 {
+	if (color_type == 0)
+		return sf::Color(0, 60, 70);
+
+	if (color_type == 1)
+		return sf::Color(0, 65, 70);
+
 	return sf::Color(0, 70, 70);
 }
 
@@ -38,13 +45,17 @@ void Vapor::update(int x, int y)
 			Simulator::world[x][y] = new Water();
 
 			delete Simulator::world[pos.x][pos.y];
-			Simulator::world[pos.x][pos.y] = new Water();
+
+			if (Simulator::world[pos.x][pos.y]->nature == Nature::Ice || rand_probability(0.5f))
+				Simulator::world[pos.x][pos.y] = new Water();
+			else
+				Simulator::world[pos.x][pos.y] = new Air();
 
 			return;
 		}
 	}
 
-	if (rand_probability(0.1f) && (is_border(x, y) || is_near(x, y, State::Solid) || is_near(x, y, State::Dust)))
+	if (rand_probability(0.03f) && (is_border(x, y) || is_near(x, y, State::Solid) || is_near(x, y, State::Dust)))
 	{
 		delete Simulator::world[x][y];
 		Simulator::world[x][y] = new Water();

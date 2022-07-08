@@ -10,7 +10,7 @@ Water::Water()
 	fire_level = 0;
 	can_burn = false;
 	way = rand() % 2 * 2 - 1;
-	color_swtich = 0;
+	color_type = 0;
 	salty = false;
 	done = false;
 }
@@ -23,25 +23,13 @@ Material* Water::build()
 sf::Color Water::get_color() const
 {
 	if (salty)
-		return sf::Color(0, 100, 255);
+		return sf::Color(20, 100, 255);
 	else
-		return sf::Color(0, 50, 255);
+		return sf::Color(10, 70, 255);
 }
 
 void Water::update(int x, int y)
 {
-	if (salty)
-	{
-		auto pos = Simulator::ways_4[random_int(0, 4)];
-
-		if (Simulator::in_world(pos) && Simulator::world[pos.x][pos.y]->nature == Nature::Water &&
-			!Simulator::world[pos.x][pos.y]->salty)
-		{
-			salty = false;
-			Simulator::world[pos.x][pos.y]->salty = true;
-		}
-	}
-
 	for (auto& way : Simulator::ways_4)
 	{
 		auto pos = dim::Vector2int(x, y) + way;

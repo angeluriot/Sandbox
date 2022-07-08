@@ -10,7 +10,7 @@ Acid::Acid()
 	fire_level = 0;
 	can_burn = false;
 	way = rand() % 2 * 2 - 1;
-	color_swtich = 0;
+	color_type = rand_probability(0.05f) ? 0 : 1;
 	salty = false;
 	done = false;
 }
@@ -22,6 +22,9 @@ Material* Acid::build()
 
 sf::Color Acid::get_color() const
 {
+	if (color_type == 0)
+		return sf::Color(150, 255, 30);
+
 	return sf::Color(50, 255, 0);
 }
 

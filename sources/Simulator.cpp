@@ -1,8 +1,9 @@
 #include "Simulator.hpp"
 #include "materials/Air.hpp"
 #include "materials/Wood.hpp"
+#include "Menu.hpp"
 
-dim::Vector2int						Simulator::world_size = dim::Vector2int(100, std::floor(100.f / (16.f / 9.f)));
+dim::Vector2int						Simulator::world_size;
 std::vector<std::vector<Material*>>	Simulator::world;
 std::vector<dim::Vector2int>		Simulator::world_ids;
 Material*							Simulator::brush_type = new Wood();
@@ -29,17 +30,29 @@ const std::array<dim::Vector2int, 8> Simulator::ways_8 = {
 	dim::Vector2int(1, 1)
 };
 
+dim::Vector2int set_world_size(int size)
+{
+	float ratio = (float)dim::Scene::get("Simulation").get_size().x / (float)dim::Scene::get("Simulation").get_size().y;
+
+	if (ratio > 1.0f)
+		return dim::Vector2int(size, (int)(size / ratio));
+	else
+		return dim::Vector2int((int)(size * ratio), size);
+}
+
 void Simulator::init()
 {
+	world_size = set_world_size(200);
 	image = new sf::Image();
 	texture = new sf::Texture();
 	sprite = new sf::Sprite();
-
 	reset();
 }
 
 void Simulator::reset()
 {
+	world_size = set_world_size(std::max(world_size.x, world_size.y));
+
 	for (auto& line : world)
 		for (auto& cell : line)
 			delete cell;
@@ -64,14 +77,17 @@ void Simulator::reset()
 
 dim::Vector2int Simulator::screen_to_world(dim::Vector2int position)
 {
-	return dim::Vector2int(((float)position.x / (float)dim::Window::get_size().x) * world_size.x,
-		((float)position.y / (float)dim::Window::get_size().y) * world_size.y);
+	position -= dim::Scene::get("Simulation").get_center() - (dim::Scene::get("Simulation").get_size() / 2.f);
+
+	return dim::Vector2int(((float)(position.x) / (float)dim::Scene::get("Simulation").get_size().x) * world_size.x,
+		((float)position.y / (float)dim::Scene::get("Simulation").get_size().y) * world_size.y);
 }
 
 dim::Vector2int Simulator::world_to_screen(dim::Vector2int position)
 {
-	return dim::Vector2int(((float)position.x / (float)world_size.x) * dim::Window::get_size().x,
-		((float)position.y / (float)world_size.y) * dim::Window::get_size().y);
+	return dim::Vector2int(((float)position.x / (float)world_size.x) * dim::Scene::get("Simulation").get_size().x,
+		((float)position.y / (float)world_size.y) * dim::Scene::get("Simulation").get_size().y) +
+		dim::Scene::get("Simulation").get_center() - (dim::Scene::get("Simulation").get_size() / 2.f);
 }
 
 bool Simulator::in_world(dim::Vector2int position)
@@ -86,39 +102,53 @@ bool Simulator::in_world(int x, int y)
 
 void Simulator::inputs()
 {
-	dim::Vector2int position = screen_to_world(sf::Mouse::getPosition());
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) &&
+		dim::Scene::get("Simulation").is_in(sf::Mouse::getPosition(dim::Window::get_window())))
+	{
+		dim::Vector2int position = screen_to_world(sf::Mouse::getPosition(dim::Window::get_window()));
+		int radius = floor((float)brush_size / 2.f) + 1;
 
-	if (brush_type->state == Material::State::Solid || (brush_type->state == Material::State::Empty && brush_type->fire_level == 0))
-		for (int x = position.x - brush_size / 2; x <= position.x + brush_size / 2; x++)
-			for (int y = position.y - brush_size / 2; y <= position.y + brush_size / 2; y++)
-				if (in_world(x, y) && distance(position, x, y) < brush_size / 2)
+		if (brush_type->state == Material::State::Solid || (brush_type->state == Material::State::Empty && brush_type->fire_level == 0))
+			for (int x = position.x - radius; x <= position.x + radius; x++)
+				for (int y = position.y - radius; y <= position.y + radius; y++)
 				{
-					delete world[x][y];
-					world[x][y] = brush_type->build();
+					if (in_world(x, y) && distance(position, x, y) < radius &&
+						!(brush_type->nature == world[x][y]->nature && brush_type->fire_level == world[x][y]->fire_level))
+					{
+						delete world[x][y];
+						world[x][y] = brush_type->build();
+					}
 				}
 
-	else
-		for (int i = 0; i < brush_size / 2; i++)
-		{
-			int x = random_int(position.x - brush_size / 2, position.x + brush_size / 2 + 1);
-			int y = random_int(position.y - brush_size / 2, position.y + brush_size / 2 + 1);
-
-			if (in_world(x, y) && distance(position, x, y) < brush_size / 2 && brush_type->state >= world[x][y]->state)
+		else
+			for (int i = 0; i < radius; i++)
 			{
-				if (brush_type->fire_level > 0 && brush_type->state == Material::State::Empty)
-					world[x][y]->fire_level = Material::fire_max;
+				int x = random_int(position.x - radius, position.x + radius + 1);
+				int y = random_int(position.y - radius, position.y + radius + 1);
 
-				else
+				if (in_world(x, y) && distance(position, x, y) <= radius && brush_type->state >= world[x][y]->state &&
+					!(brush_type->nature == world[x][y]->nature && brush_type->fire_level == world[x][y]->fire_level))
 				{
-					delete world[x][y];
-					world[x][y] = brush_type->build();
+					if (brush_type->fire_level > 0 && brush_type->state == Material::State::Empty)
+						world[x][y]->fire_level = Material::fire_max;
+
+					else
+					{
+						delete world[x][y];
+						world[x][y] = brush_type->build();
+					}
 				}
 			}
-		}
+	}
 }
 
 void Simulator::update()
 {
+	static int step = 0;
+
+	if (step < 10 || dim::Scene::get("Simulation").is_resized())
+		reset();
+
 	for (int i = 0; i < world_ids.size(); i++)
 		std::swap(world_ids[i], world_ids[random_int(0, world_ids.size())]);
 
@@ -130,12 +160,14 @@ void Simulator::update()
 			cell->done = false;
 
 	for (auto& pos : world_ids)
-		if (world[pos.x][pos.y]->fire_level > 0 && rand_probability(0.2f))
+		if (world[pos.x][pos.y]->fire_level > 0 && rand_probability(0.5f))
 			world[pos.x][pos.y]->update_fire(pos.x, pos.y);
 
 	for (auto& line : world)
 		for (auto& cell : line)
 			cell->done = false;
+
+	step++;
 }
 
 void Simulator::draw()
@@ -147,16 +179,15 @@ void Simulator::draw()
 			sf::Color fire_color = world[x][y]->get_fire_color();
 			float opacity = (float)fire_color.a / 255.f;
 
-			/*image->setPixel(x, y, sf::Color(
+			image->setPixel(x, y, sf::Color(
 				(1 - opacity) * color.r + opacity * fire_color.r,
 				(1 - opacity) * color.g + opacity * fire_color.g,
-				(1 - opacity) * color.b + opacity * fire_color.b,
-				255));*/
-
-			image->setPixel(x, y, sf::Color::Red);
+				(1 - opacity) * color.b + opacity * fire_color.b
+			));
 		}
 
 	texture->loadFromImage(*image);
-	sprite->setTexture(*texture);
-	dim::Window::draw(*sprite);
+	sprite->setTexture(*texture, true);
+	sprite->setScale((dim::Vector2(dim::Scene::get("Simulation").get_size()) / dim::Vector2(world_size)).to_sf_float());
+	dim::Scene::get("Simulation").draw(*sprite);
 }

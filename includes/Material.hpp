@@ -40,12 +40,11 @@ public:
 	int		fire_level;
 	bool	can_burn;
 	int		way;
-	bool	color_swtich;
+	int		color_type;
 	bool	salty;
 	bool	done;
 
 	static constexpr int fire_max = 10;
-	static const std::vector<Material*> materials;
 
 	Material() = default;
 	Material(const Material& material) = default;

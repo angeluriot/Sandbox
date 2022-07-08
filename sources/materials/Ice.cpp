@@ -10,7 +10,9 @@ Ice::Ice()
 	fire_level = 0;
 	can_burn = false;
 	way = rand() % 2 * 2 - 1;
-	color_swtich = 0;
+	color_type = 1;
+	color_type += rand_probability(0.1f) ? 0 : 1;
+	color_type -= rand_probability(0.02f) ? 0 : 1;
 	salty = false;
 	done = false;
 }
@@ -22,7 +24,13 @@ Material* Ice::build()
 
 sf::Color Ice::get_color() const
 {
-	return sf::Color(0, 200, 255);
+	if (color_type == 0)
+		return sf::Color(80, 230, 255);
+
+	if (color_type == 1)
+		return sf::Color(50, 210, 250);
+
+	return sf::Color(65, 220, 252);
 }
 
 void Ice::update(int x, int y)

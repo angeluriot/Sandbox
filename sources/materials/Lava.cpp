@@ -10,7 +10,7 @@ Lava::Lava()
 	fire_level = fire_max;
 	can_burn = false;
 	way = rand() % 2 * 2 - 1;
-	color_swtich = 0;
+	color_type = random_int(0, 3);
 	salty = false;
 	done = false;
 }
@@ -22,7 +22,13 @@ Material* Lava::build()
 
 sf::Color Lava::get_color() const
 {
-	return sf::Color(255, 127, 0);
+	if (color_type == 0)
+		return sf::Color(255, 100, 0);
+
+	if (color_type == 1)
+		return sf::Color(255, 85, 0);
+
+	return sf::Color(255, 70, 0);
 }
 
 void Lava::update(int x, int y)

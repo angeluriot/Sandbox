@@ -1,14 +1,19 @@
 #include "Menu.hpp"
 #include "Simulator.hpp"
+#include "materials/Air.hpp"
+#include "materials/Wood.hpp"
+#include "materials/Sand.hpp"
+#include "materials/Water.hpp"
+#include "materials/Oil.hpp"
+#include "materials/Salt.hpp"
+#include "materials/Coal.hpp"
+#include "materials/Stone.hpp"
+#include "materials/Lava.hpp"
+#include "materials/Ice.hpp"
+#include "materials/Snow.hpp"
+#include "materials/Acid.hpp"
 
-bool Menu::visible	= true;
-bool Menu::active	= false;
-
-void Menu::check_events(const sf::Event& sf_event)
-{
-	if (sf_event.type == sf::Event::KeyReleased && sf_event.key.code == sf::Keyboard::Key::F1)
-		visible = !visible;
-}
+bool Menu::active = false;
 
 void Menu::title(const std::string& text)
 {
@@ -44,54 +49,56 @@ std::vector<bool> Menu::centered_buttons(const std::vector<std::string> texts, f
 
 void Menu::display()
 {
-	if (visible)
+	ImGui::Begin("Settings");
+	ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.9f);
+
+	ImGui::NewLine();
+	ImGui::Text("The resolution of the grid:");
+
+	if (ImGui::SliderInt("##resolution", &Simulator::world_size.x, 50, 500))
+		Simulator::reset();
+
+	static int selected = 0;
+
+	ImGui::NewLine();
+	ImGui::Text("The type of the brush:");
+
+	if (ImGui::Combo("##brush_type", &selected, "Wood\0Sand\0Water\0Oil\0Salt\0Coal\0Stone\0Lava\0Ice\0Snow\0Acid\0Fire\0Eraser"))
 	{
-		ImGui::Begin("Settings (F1 to hide)");
-		ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.9f);
-
-		ImGui::NewLine();
-		ImGui::Text("The resolution of the grid:");
-
-		if (ImGui::SliderInt("##resolution", &Simulator::world_size.x, 100, 1000))
+		switch (selected)
 		{
-			Simulator::world_size.y = std::floor((float)Simulator::world_size.x / (16.f / 9.f));
-			Simulator::reset();
-		}
-
-		int nature = (int)Simulator::brush_type->nature - 1;
-
-		if (nature == -1)
-		{
-			if (Simulator::brush_type->fire_level > 0)
-				nature = Material::materials.size() - 1;
-			else
-				nature = Material::materials.size();
-		}
-
-		ImGui::NewLine();
-		ImGui::Text("The type of the brush:");
-
-		if (ImGui::Combo("##brush_type", &nature, "Wood\0Sand\0Water\0Oil\0Salt\0Ash\0Coal\0Stone\0Lava\0Vapor\0Ice\0Snow\0Acid\0Fire\0Eraser"))
-		{
-			if (nature == Material::materials.size() - 1)
-			{
-				Simulator::brush_type = Material::materials[0]->build();
+			case 0: Simulator::brush_type = new Wood(); break;
+			case 1: Simulator::brush_type = new Sand(); break;
+			case 2: Simulator::brush_type = new Water(); break;
+			case 3: Simulator::brush_type = new Oil(); break;
+			case 4: Simulator::brush_type = new Salt(); break;
+			case 5: Simulator::brush_type = new Coal(); break;
+			case 6: Simulator::brush_type = new Stone(); break;
+			case 7: Simulator::brush_type = new Lava(); break;
+			case 8: Simulator::brush_type = new Ice(); break;
+			case 9: Simulator::brush_type = new Snow(); break;
+			case 10: Simulator::brush_type = new Acid(); break;
+			case 11:
+				Simulator::brush_type = new Air();
 				Simulator::brush_type->fire_level = Material::fire_max;
-			}
-
-			else if (nature == Material::materials.size())
-				Simulator::brush_type = Material::materials[0]->build();
-
-			else
-				Simulator::brush_type = Material::materials[nature + 1]->build();
+				break;
+			case 12:
+				Simulator::brush_type = new Air();
+				break;
 		}
-
-		ImGui::NewLine();
-		ImGui::Text("The size of the brush:");
-		ImGui::SliderInt("##brush_size", &Simulator::brush_size, 1, 10);
-
-		active = ImGui::IsWindowFocused();
-
-		ImGui::End();
 	}
+
+	ImGui::NewLine();
+	ImGui::Text("The size of the brush:");
+	ImGui::SliderInt("##brush_size", &Simulator::brush_size, 1, 20);
+
+	ImGui::NewLine();
+	ImGui::Text("Clear the grid:");
+
+	if (ImGui::Button("Clear", ImVec2(ImGui::GetWindowSize().x * 0.9f, 0.f)))
+		Simulator::reset();
+
+	active = ImGui::IsWindowFocused();
+
+	ImGui::End();
 }

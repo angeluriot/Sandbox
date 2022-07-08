@@ -9,7 +9,9 @@ Stone::Stone()
 	fire_level = 0;
 	can_burn = false;
 	way = rand() % 2 * 2 - 1;
-	color_swtich = 0;
+	color_type = 1;
+	color_type += rand_probability(0.015f) ? 0 : 1;
+	color_type -= rand_probability(0.015f) ? 0 : 1;
 	salty = false;
 	done = false;
 }
@@ -21,7 +23,13 @@ Material* Stone::build()
 
 sf::Color Stone::get_color() const
 {
-	return sf::Color(150, 150, 150);
+	if (color_type == 0)
+		return sf::Color(140, 140, 140);
+
+	if (color_type == 1)
+		return sf::Color(150, 150, 150);
+
+	return sf::Color(160, 160, 160);
 }
 
 void Stone::update(int x, int y) {}
