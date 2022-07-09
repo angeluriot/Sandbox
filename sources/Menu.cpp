@@ -1,13 +1,14 @@
 #include "Menu.hpp"
 #include "Simulator.hpp"
 #include "materials/Air.hpp"
-#include "materials/Wood.hpp"
+#include "materials/Stone.hpp"
 #include "materials/Sand.hpp"
 #include "materials/Water.hpp"
-#include "materials/Oil.hpp"
 #include "materials/Salt.hpp"
+#include "materials/Wood.hpp"
 #include "materials/Coal.hpp"
-#include "materials/Stone.hpp"
+#include "materials/Oil.hpp"
+#include "materials/Gas.hpp"
 #include "materials/Lava.hpp"
 #include "materials/Ice.hpp"
 #include "materials/Snow.hpp"
@@ -63,7 +64,7 @@ void Menu::display()
 	ImGui::NewLine();
 	ImGui::Text("The type of the brush:");
 
-	if (ImGui::Combo("##brush_type", &selected, "Stone\0Sand\0Water\0Salt\0Wood\0Coal\0Oil\0Fire\0Lava\0Ice\0Snow\0Acid\0Eraser"))
+	if (ImGui::Combo("##brush_type", &selected, "Stone\0Sand\0Water\0Salt\0Wood\0Coal\0Oil\0Gas\0Fire\0Lava\0Ice\0Snow\0Acid\0Eraser"))
 	{
 		switch (selected)
 		{
@@ -74,15 +75,16 @@ void Menu::display()
 			case 4: Simulator::brush_type = new Wood(); break;
 			case 5: Simulator::brush_type = new Coal(); break;
 			case 6: Simulator::brush_type = new Oil(); break;
-			case 7:
+			case 7: Simulator::brush_type = new Gas(); break;
+			case 8:
 				Simulator::brush_type = new Air();
 				Simulator::brush_type->fire_level = Material::fire_max;
 				break;
-			case 8: Simulator::brush_type = new Lava(); break;
-			case 9: Simulator::brush_type = new Ice(); break;
-			case 10: Simulator::brush_type = new Snow(); break;
-			case 11: Simulator::brush_type = new Acid(); break;
-			case 12:
+			case 9: Simulator::brush_type = new Lava(); break;
+			case 10: Simulator::brush_type = new Ice(); break;
+			case 11: Simulator::brush_type = new Snow(); break;
+			case 12: Simulator::brush_type = new Acid(); break;
+			case 13:
 				Simulator::brush_type = new Air();
 				break;
 		}
