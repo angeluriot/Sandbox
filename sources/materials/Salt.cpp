@@ -33,6 +33,8 @@ sf::Color Salt::get_color() const
 
 void Salt::update(int x, int y)
 {
+	// Dissolve in water
+
 	if (rand_probability(0.01f))
 		for (auto& way : Simulator::ways_4)
 		{

@@ -2,6 +2,9 @@
 #define WOOD_HPP
 #include "Material.hpp"
 
+/**
+ * @brief A class representing the wood.
+ */
 class Wood : public Material
 {
 public:

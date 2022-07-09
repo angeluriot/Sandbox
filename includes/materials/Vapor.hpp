@@ -2,6 +2,9 @@
 #define VAPOR_HPP
 #include "Material.hpp"
 
+/**
+ * @brief A class representing the vapor which can condense into water
+ */
 class Vapor : public Material
 {
 public:

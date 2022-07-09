@@ -2,6 +2,9 @@
 #define GAS_HPP
 #include "Material.hpp"
 
+/**
+ * @brief A class representing a flammable gas.
+ */
 class Gas : public Material
 {
 public:

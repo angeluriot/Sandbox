@@ -30,6 +30,8 @@ sf::Color Water::get_color() const
 
 void Water::update(int x, int y)
 {
+	// Turn off fire
+
 	for (auto& way : Simulator::ways_4)
 	{
 		auto pos = dim::Vector2int(x, y) + way;

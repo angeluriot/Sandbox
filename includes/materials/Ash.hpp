@@ -2,6 +2,9 @@
 #define ASH_HPP
 #include "Material.hpp"
 
+/**
+ * @brief A class representing the ash created by the fire.
+ */
 class Ash : public Material
 {
 public:

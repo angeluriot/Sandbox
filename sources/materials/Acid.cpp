@@ -30,6 +30,8 @@ sf::Color Acid::get_color() const
 
 void Acid::update(int x, int y)
 {
+	// Dissolve materials
+
 	if (rand_probability(0.01f))
 		for (auto& pos : Simulator::ways_8)
 			if (Simulator::in_world(x + pos.x, y + pos.y) &&

@@ -2,6 +2,9 @@
 #define SNOW_HPP
 #include "Material.hpp"
 
+/**
+ * @brief A class representing the snow.
+ */
 class Snow : public Material
 {
 public:

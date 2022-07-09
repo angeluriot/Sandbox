@@ -2,6 +2,9 @@
 #define OIL_HPP
 #include "Material.hpp"
 
+/**
+ * @brief A class representing flammable oil.
+ */
 class Oil : public Material
 {
 public:

@@ -35,6 +35,8 @@ sf::Color Ice::get_color() const
 
 void Ice::update(int x, int y)
 {
+	// Melting conditions
+
 	bool is_hot_near = false;
 
 	for (auto& pos : Simulator::ways_4)

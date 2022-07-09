@@ -169,6 +169,7 @@ void Material::update_liquid(int x, int y)
 		way = -way;
 	}
 
+	// Moves in the liquid
 	else if (rand_probability(0.03f))
 	{
 		auto pos = dim::Vector2int(x, y) + Simulator::ways_4[random_int(0, 4)];
@@ -196,6 +197,7 @@ void Material::update_gas(int x, int y)
 		count++;
 	}
 
+	// Moves in the gas
 	auto pos = dim::Vector2int(x, y) + Simulator::ways_4[random_int(0, 4)];
 
 	if (Simulator::in_world(pos) && Simulator::world[x][y]->nature == Simulator::world[pos.x][pos.y]->nature)

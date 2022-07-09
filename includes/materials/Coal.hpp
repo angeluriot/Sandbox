@@ -2,6 +2,9 @@
 #define COAL_HPP
 #include "Material.hpp"
 
+/**
+ * @brief A class representing the coal.
+ */
 class Coal : public Material
 {
 public:

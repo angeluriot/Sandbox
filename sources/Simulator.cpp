@@ -108,6 +108,7 @@ void Simulator::inputs()
 		dim::Vector2int position = screen_to_world(sf::Mouse::getPosition(dim::Window::get_window()));
 		int radius = floor((float)brush_size / 2.f) + 1;
 
+		// If the material is solid
 		if (brush_type->state == Material::State::Solid || (brush_type->state == Material::State::Empty && brush_type->fire_level == 0))
 			for (int x = position.x - radius; x <= position.x + radius; x++)
 				for (int y = position.y - radius; y <= position.y + radius; y++)
@@ -120,6 +121,7 @@ void Simulator::inputs()
 					}
 				}
 
+		// If the material moves
 		else
 			for (int i = 0; i < radius; i++)
 			{
@@ -152,6 +154,7 @@ void Simulator::update()
 	for (int i = 0; i < world_ids.size(); i++)
 		std::swap(world_ids[i], world_ids[random_int(0, world_ids.size())]);
 
+	// Update each cell
 	for (auto& pos : world_ids)
 		world[pos.x][pos.y]->update(pos.x, pos.y);
 
@@ -159,6 +162,7 @@ void Simulator::update()
 		for (auto& cell : line)
 			cell->done = false;
 
+	// Update fire
 	for (auto& pos : world_ids)
 		if (world[pos.x][pos.y]->fire_level > 0 && rand_probability(0.5f))
 			world[pos.x][pos.y]->update_fire(pos.x, pos.y);

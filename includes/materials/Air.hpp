@@ -2,6 +2,9 @@
 #define AIR_HPP
 #include "Material.hpp"
 
+/**
+ * @brief A class representing the air.
+ */
 class Air : public Material
 {
 public:

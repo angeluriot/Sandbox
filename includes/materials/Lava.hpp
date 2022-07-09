@@ -2,6 +2,9 @@
 #define LAVA_HPP
 #include "Material.hpp"
 
+/**
+ * @brief A class representing the lava.
+ */
 class Lava : public Material
 {
 public:

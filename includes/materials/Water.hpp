@@ -2,6 +2,9 @@
 #define WATER_HPP
 #include "Material.hpp"
 
+/**
+ * @brief A class representing the water that can evaporate.
+ */
 class Water : public Material
 {
 public:

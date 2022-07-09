@@ -34,6 +34,8 @@ sf::Color Vapor::get_color() const
 
 void Vapor::update(int x, int y)
 {
+	// Condensation conditions
+
 	for (auto& way : Simulator::ways_4)
 	{
 		auto pos = dim::Vector2int(x, y) + way;

@@ -2,6 +2,9 @@
 #define SAND_HPP
 #include "Material.hpp"
 
+/**
+ * @brief A class representing the sand.
+ */
 class Sand : public Material
 {
 public:

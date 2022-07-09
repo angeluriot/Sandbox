@@ -2,6 +2,9 @@
 #define ACID_HPP
 #include "Material.hpp"
 
+/**
+ * @brief A class representing an acid fluid that dissolves other materials.
+ */
 class Acid : public Material
 {
 public:

@@ -2,6 +2,9 @@
 #define SALT_HPP
 #include "Material.hpp"
 
+/**
+ * @brief A class representing the salt that can dissolve in water.
+ */
 class Salt : public Material
 {
 public:

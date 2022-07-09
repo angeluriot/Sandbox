@@ -2,6 +2,9 @@
 #define ICE_HPP
 #include "Material.hpp"
 
+/**
+ * @brief A class representing ice.
+ */
 class Ice : public Material
 {
 public:

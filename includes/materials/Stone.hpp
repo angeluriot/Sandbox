@@ -2,6 +2,9 @@
 #define STONE_HPP
 #include "Material.hpp"
 
+/**
+ * @brief A class representing the stone.
+ */
 class Stone : public Material
 {
 public:
