@@ -1,86 +1,156 @@
-# Sandbox
+# 2D fluid simulation
 
-![Release](https://img.shields.io/badge/Release-1.0-blueviolet)
+![Release](https://img.shields.io/badge/Release-v2.0-blueviolet)
 ![Language](https://img.shields.io/badge/Language-C%2B%2B-0052cf)
-![Library](https://img.shields.io/badge/Library-SFML-00cf2c)
-![Size](https://img.shields.io/badge/Size-32%20Mo-f12222)
+![Libraries](https://img.shields.io/badge/Libraries-Dimension3D-00cf2c)
+![Size](https://img.shields.io/badge/Size-222Mo-f12222)
 ![Open Source](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)
 
 <br/>
 
-This program is a sandbox 2D application simulating the interactions between a large number of materials.
+This program is a sandbox 2D application simulating the interactions between a large number of materials. It uses a grid where each square represents an element of a material.
+
+<br/>
+
+⚠️ This repository contains **submodules**, add `--recurse-submodules` when cloning ⚠️
 
 <br/>
 
 <p align="center">
-	<img src="https://i.imgur.com/THYA1TQ.png" width="700">
+	<img src="resources/misc/thumbnail.png" width="700">
 </p>
 
 <br/>
 
-# Dependencies
+# Summary
 
-* SFML
+* **[Summary](#summary)**
+* **[Features](#features)**
+	* [Menu](#menu)
+	* [Materials](#materials)
+* **[Install](#install)**
+	* [Skeleton project install](#skeleton-project-install)
+* **[Releases](#releases)**
+* **[Tests](#tests)**
+* **[Credits](#credits)**
 
 <br/>
 
 # Features
 
-* The program has an integrated menu to change the options of the simulation :
+### Menu
+
+* A menu to control the simulation
+
+* You can choose the resolution of the grid
+
+* You can choose the type and the size of the brush
+
+* You can put any material in the grid
+
+### Materials
+
+* **Stone:**
 
 <p align="center">
-	<img src="https://i.imgur.com/XnBnzrF.png" width="500">
+	<img src="resources/misc/stone.png" width="500">
 </p>
 
-* Once the program started, you can choose the type of material you want and click on the screen to put some in the simulation :
+* **Sand:** it flows just like in real life
 
 <p align="center">
-	<img src="https://i.imgur.com/tcv0mqY.png" width="500">
+	<img src="resources/misc/sand.png" width="500">
+</p>
+
+* **Water:** it flows just like in real life and evaporates with fire
+
+<p align="center">
+	<img src="resources/misc/water.png" width="500">
+</p>
+
+* **Salt:** it dissolves with water
+
+<p align="center">
+	<img src="resources/misc/salt.png" width="500">
+</p>
+
+* **Wood:** it burns with fire and create ash
+
+<p align="center">
+	<img src="resources/misc/wood.png" width="500">
+</p>
+
+* **Coal:** like wood but it is harder to burn
+
+<p align="center">
+	<img src="resources/misc/coal.png" width="500">
+</p>
+
+* **Oil:** a liquid that can burn
+
+<p align="center">
+	<img src="resources/misc/oil.png" width="500">
+</p>
+
+* **Gas:** it behaves like gas in real life and can burn
+
+<p align="center">
+	<img src="resources/misc/gas.png" width="500">
+</p>
+
+* **Lava:** a liquid that burns everything and becomes stone with time or water
+
+<p align="center">
+	<img src="resources/misc/lava.png" width="500">
+</p>
+
+* **Ice:** it can melt with time or fire
+
+<p align="center">
+	<img src="resources/misc/ice.png" width="500">
+</p>
+
+* **Snow:** it can melt with time, fire or salt
+
+<p align="center">
+	<img src="resources/misc/snow.png" width="500">
+</p>
+
+* **Acid:** it dissolves everything
+
+<p align="center">
+	<img src="resources/misc/acid.png" width="500">
+</p>
+
+<br/>
+
+# Install
+
+### Skeleton project install
+
+This repository is based on my [**Graphics skeleton project**](https://github.com/angeluriot/Graphics_skeleton), so go see its [**install**](https://github.com/angeluriot/Graphics_skeleton#install) part.
+
+<br/>
+
+# Releases
+
+If you just want to test the program without editing the source code, go see the [**Releases**](https://github.com/angeluriot/Sandbox/releases).
+
+<br/>
+
+# Tests
+
+<p align="center">
+	<img src="resources/misc/test_1.png" width="500">
 </p>
 
 <p align="center">
-	<img src="https://i.imgur.com/BYAazUx.png" width="500">
+	<img src="resources/misc/test_2.png" width="500">
 </p>
 
 <p align="center">
-	<img src="https://i.imgur.com/orWJnK1.png" width="500">
+	<img src="resources/misc/test_3.png" width="500">
 </p>
-
-* Wood, coal and oil burn on contact with fire :
-
-<p align="center">
-	<img src="https://i.imgur.com/T02gi5a.png" width="500">
-</p>
-
-* Fire and lava melt ice and evaporate water :
-
-<p align="center">
-	<img src="https://i.imgur.com/YtjOy54.png" width="500">
-</p>
-
-<p align="center">
-	<img src="https://i.imgur.com/mVku3e3.png" width="500">
-</p>
-
-<p align="center">
-	<img src="https://i.imgur.com/QKkfIDl.png" width="500">
-</p>
-
-<p align="center">
-	<img src="https://i.imgur.com/BgNF5VK.png" width="500">
-</p>
-
-* Salt dissolves in water :
-
-<p align="center">
-	<img src="https://i.imgur.com/888s900.png" width="500">
-</p>
-
-<p align="center">
-	<img src="https://i.imgur.com/cLxHkCA.png" width="500">
-</p>
-
-* The program also includes other materials and simulates other behaviors. Test it to discover them in the [**Releases**](https://github.com/angeluriot/Sandbox/releases) section.
 
 <br/>
 

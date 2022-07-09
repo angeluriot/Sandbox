@@ -42,7 +42,7 @@ dim::Vector2int set_world_size(int size)
 
 void Simulator::init()
 {
-	world_size = set_world_size(200);
+	world_size = set_world_size(300);
 	image = new sf::Image();
 	texture = new sf::Texture();
 	sprite = new sf::Sprite();
@@ -147,9 +147,12 @@ void Simulator::inputs()
 void Simulator::update()
 {
 	static int step = 0;
+	static dim::Vector2int temp = dim::Scene::get("Simulation").get_size();
 
-	if (step < 10 || dim::Scene::get("Simulation").is_resized())
+	if (step < 10 || temp != dim::Scene::get("Simulation").get_size())
 		reset();
+
+	temp = dim::Scene::get("Simulation").get_size();
 
 	for (int i = 0; i < world_ids.size(); i++)
 		std::swap(world_ids[i], world_ids[random_int(0, world_ids.size())]);

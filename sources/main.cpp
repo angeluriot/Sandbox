@@ -5,7 +5,7 @@
 int main()
 {
 	dim::Window::open("Sandbox", 0.75f, "resources/icons/icon.png");
-	dim::Window::get_window().setFramerateLimit(256);
+	dim::Window::get_window().setFramerateLimit(144);
 	dim::Scene::add("Simulation");
 	Simulator::init();
 
